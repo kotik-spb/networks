@@ -1,17 +1,48 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <div class="container">
+      <h3 class="text-left">
+        Выбранная сеть(город): {{ chosenNetwork ? chosenNetwork.city : "-" }}
+      </h3>
+      <h3 class="text-left">
+        Количество станций сети: {{ stations.length ? stations.length : "-" }}
+      </h3>
+      <hr />
+      <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6">
+          <Networks @chosenNet="changeNetwork" />
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6">
+          <Stations />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import Networks from "./components/Networks.vue";
+import Stations from "./components/Stations.vue";
+import { mapGetters } from "vuex";
 
 export default {
   name: "App",
   components: {
-    HelloWorld
+    Networks,
+    Stations
+  },
+  data() {
+    return {
+      chosenNetwork: ""
+    };
+  },
+  computed: {
+    ...mapGetters(["stationsLoading", "stations"])
+  },
+  methods: {
+    changeNetwork(netName) {
+      this.chosenNetwork = netName;
+    }
   }
 };
 </script>
